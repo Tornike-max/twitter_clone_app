@@ -9,7 +9,21 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $ideas = Idea::orderBy('created_at', 'desc')->paginate(5);
+        $q = request('query');
+
+        $ideas = Idea::query()->with('comments');
+
+        if (isset($q)) {
+            $val = request()->validate([
+                'query' => 'required|min:2'
+            ]);
+
+            $ideas->where('content', 'like', '%' . $val['query'] . '%');
+        } else {
+            $ideas->orderBy('created_at', 'desc');
+        };
+
+        $ideas = $ideas->paginate(5);
 
         return view('dashboard', [
             'ideas' => $ideas
