@@ -11,7 +11,7 @@ class DashboardController extends Controller
     {
         $q = request('query');
 
-        $ideas = Idea::query()->with('comments');
+        $ideas = Idea::query()->with(['comments', 'user']);
 
         if (isset($q)) {
             $val = request()->validate([
@@ -24,6 +24,7 @@ class DashboardController extends Controller
         };
 
         $ideas = $ideas->paginate(5);
+
 
         return view('dashboard', [
             'ideas' => $ideas

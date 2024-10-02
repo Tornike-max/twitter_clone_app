@@ -18,12 +18,22 @@
     <x-nav />
     <div class="container py-4">
         <div class="row">
+            @auth
             <x-left-side-bar />
+            @endauth
+            @auth
             <div class="col-6">
                 {{$slot}}
             </div>
+            @endauth
+            @guest
+            <div class="col-12">
+                {{$slot}}
+            </div>
+            @endguest
+            @auth
             <x-right-side-bar />
-
+            @endauth
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
