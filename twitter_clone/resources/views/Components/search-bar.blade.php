@@ -4,7 +4,7 @@
     </div>
     <form method="GET" action="{{route('dashboard')}}" class="card-body">
         <input placeholder="...
-        " class="form-control w-100" type="text" id="search" name="query">
+        " class="form-control w-100" type="text" id="search" name="query" value="{{request('query')}}">
         @error('query')
         <span class="text-danger">{{$message}}</span>
         @enderror

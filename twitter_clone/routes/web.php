@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -19,9 +20,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'session'])->name('auth.session');
 });
 
+Route::get('/profile', [UserController::class, 'index'])->name('profile.index');
+
 Route::middleware('auth')->group(function () {
     Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.session.logout');
-    Route::get('/profile', [ProfileController::class, 'index']);
     Route::post('/ideas/{idea}/comments', [CommentController::class, 'store'])->name('ideas.comments.store');
     Route::put('/ideas/{idea}', [IdeaController::class, 'update'])->name('ideas.update');
     Route::post('/idea', [IdeaController::class, 'store'])->name('idea.store');

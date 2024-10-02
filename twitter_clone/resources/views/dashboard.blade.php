@@ -4,11 +4,13 @@
     @endif
     <x-submit-idea />
     <hr>
-    @foreach ($ideas as $idea)
+    @forelse ($ideas as $idea)
     <div class="mt-3">
         <x-idea-card :$idea />
     </div>
-    @endforeach
+    @empty
+    <h1>No Results Found</h1>
+    @endforelse
     <div class="mt-4">
         {{$ideas->links()}}
     </div>

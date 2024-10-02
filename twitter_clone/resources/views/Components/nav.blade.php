@@ -10,7 +10,7 @@
             <ul class="navbar-nav">
                 @auth
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">Profile</a>
+                    <a class="nav-link" href="{{route('profile.index')}}">Profile</a>
                 </li>
                 <li class="nav-item">
                     <form method="POST" action="{{route('auth.session.logout')}}">
