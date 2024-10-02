@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Idea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class IdeaController extends Controller
 {
@@ -30,7 +31,8 @@ class IdeaController extends Controller
 
     public function edit(Idea $idea)
     {
-        if ($idea->user->id !== Auth::user()->id) {
+
+        if (!Gate::allows('is-auth', $idea)) {
             abort(401);
         }
 
@@ -41,7 +43,8 @@ class IdeaController extends Controller
 
     public function update(Request $request, Idea $idea)
     {
-        if ($idea->user->id !== Auth::user()->id) {
+
+        if (!Gate::allows('is-auth', $idea)) {
             abort(401);
         }
         $validatedData = $request->validate([
@@ -59,7 +62,9 @@ class IdeaController extends Controller
 
     public function destroy(Idea $idea)
     {
-        if ($idea->user->id !== Auth::user()->id) {
+
+
+        if (!Gate::allows('is-auth', $idea)) {
             abort(401);
         }
         $idea->delete();
