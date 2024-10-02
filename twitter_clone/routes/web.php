@@ -10,11 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/ideas/{idea}', [IdeaController::class, 'show'])->name('ideas.show');
 Route::get('/ideas/{idea}/edit', [IdeaController::class, 'edit'])->name('ideas.edit');
-Route::put('/ideas/{idea}', [IdeaController::class, 'update'])->name('ideas.update');
-Route::post('/idea', [IdeaController::class, 'store'])->name('idea.store');
-Route::delete('/idea/{idea}', [IdeaController::class, 'destroy'])->name('idea.destroy');
 
-Route::post('/ideas/{idea}/comments', [CommentController::class, 'store'])->name('ideas.comments.store');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
@@ -23,11 +19,15 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'session'])->name('auth.session');
 });
 
-Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.session.logout')->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.session.logout');
+    Route::get('/profile', [ProfileController::class, 'index']);
+    Route::post('/ideas/{idea}/comments', [CommentController::class, 'store'])->name('ideas.comments.store');
+    Route::put('/ideas/{idea}', [IdeaController::class, 'update'])->name('ideas.update');
+    Route::post('/idea', [IdeaController::class, 'store'])->name('idea.store');
+    Route::delete('/idea/{idea}', [IdeaController::class, 'destroy'])->name('idea.destroy');
+});
 
-
-
-Route::get('/profile', [ProfileController::class, 'index']);
 Route::get('/terms', function () {
     return view('terms');
 });
