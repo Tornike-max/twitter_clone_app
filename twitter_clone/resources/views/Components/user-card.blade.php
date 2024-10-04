@@ -65,7 +65,19 @@
                         </span> {{$commentsCount}} </a>
                 </div>
                 <div class="mt-3">
-                    <button class="btn btn-primary btn-sm"> Follow </button>
+                    @if ($user->id !== Auth::user()->id)
+                    @if (Auth::user()->follows($user))
+                    <form action="{{route('user.unfollow',$user)}}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary btn-sm"> UnFollow </button>
+                    </form>
+                    @else
+                    <form action="{{route('user.follow',$user)}}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary btn-sm"> Follow </button>
+                    </form>
+                    @endif
+                    @endif
                 </div>
             </div>
         </div>

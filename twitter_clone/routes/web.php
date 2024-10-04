@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\UserController;
@@ -22,6 +23,9 @@ Route::middleware('guest')->group(function () {
 
 Route::resource('user', UserController::class)->only(['show', 'edit', 'update']);
 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('user.profile');
+Route::post('/user/{user}/follow', [FollowController::class, 'follow'])->name('user.follow');
+Route::post('/user/{user}/unfollow', [FollowController::class, 'unfollow'])->name('user.unfollow');
+
 
 
 Route::middleware('auth')->group(function () {
