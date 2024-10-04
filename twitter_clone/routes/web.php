@@ -20,7 +20,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'session'])->name('auth.session');
 });
 
-Route::get('/profile', [UserController::class, 'index'])->name('profile.index');
+Route::resource('user', UserController::class)->only(['show', 'edit', 'update']);
+Route::get('/profile/{id}', [UserController::class, 'profile'])->name('user.profile');
+
 
 Route::middleware('auth')->group(function () {
     Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.session.logout');

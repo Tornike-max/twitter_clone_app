@@ -1,6 +1,6 @@
 <x-layout>
     @if (session()->has('success'))
-    <x-idea-success-message :message="session('success')" />
+    <x-success-message :message="session('success')" />
     @endif
     <x-submit-idea />
     <hr>

@@ -32,7 +32,7 @@ class IdeaController extends Controller
     public function edit(Idea $idea)
     {
 
-        if (!Gate::allows('is-auth', $idea)) {
+        if (!Gate::allows('is-author', $idea)) {
             abort(401);
         }
 
@@ -44,9 +44,10 @@ class IdeaController extends Controller
     public function update(Request $request, Idea $idea)
     {
 
-        if (!Gate::allows('is-auth', $idea)) {
+        if (!Gate::allows('is-author', $idea)) {
             abort(401);
         }
+
         $validatedData = $request->validate([
             'content' => 'required|max:250|string'
         ]);
@@ -56,15 +57,13 @@ class IdeaController extends Controller
         if ($result) {
             return redirect()->route("ideas.show", $idea->id)->with(['success' => 'Idea updated successfully']);
         }
-
-        dd($idea);
     }
 
     public function destroy(Idea $idea)
     {
 
 
-        if (!Gate::allows('is-auth', $idea)) {
+        if (!Gate::allows('is-author', $idea)) {
             abort(401);
         }
         $idea->delete();

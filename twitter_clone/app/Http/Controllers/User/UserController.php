@@ -7,19 +7,25 @@ use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the specified resource.
      */
-    public function index()
+    public function show(string $id)
     {
-        $user = User::query()->with('ideas')->where('id', '=', Auth::user()->id)->first();
+        $user = User::query()->with(['ideas', 'comments'])->where('id', '=', $id)->first();
         $ideasCount = $user->ideas()->count();
-        $commentsCount = Comment::query()->where('user_id', '=', $user->id)->count();
+        $commentsCount = $user->comments()->count();
+        $ideas = $user->ideas()->paginate(2);
+
+
 
         return view('profile.index', [
+            'editing' => false,
+            'ideas' => $ideas,
             'user' => $user,
             'commentsCount' => $commentsCount,
             'ideasCount' => $ideasCount
@@ -27,35 +33,21 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $user = User::query()->with('ideas')->where('id', '=', $id)->first();
+        $ideasCount = $user->ideas()->count();
+        $commentsCount = Comment::query()->where('user_id', '=', $user->id)->count();
+
+
+        return view('profile.index', [
+            'editing' => true,
+            'user' => $user,
+            'commentsCount' => $commentsCount,
+            'ideasCount' => $ideasCount
+        ]);
     }
 
     /**
@@ -63,7 +55,36 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'nullable',
+            'email' => 'nullable|email',
+            'bio' => 'nullable',
+            'image' => 'image'
+        ]);
+
+        $user = User::query()->find($id);
+
+        if ($request->has('image')) {
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
+            $imagePath = $request->file('image')->store('profile', 'public');
+            $validatedData['image'] = $imagePath;
+        }
+
+
+        $result = $user->update($validatedData);
+
+        if ($result) {
+            return redirect()->route('user.show', $user->id)->with(['success' => 'User Updated Successflly']);
+        } else {
+            return redirect()->route('user.edit', $user->id)->with(['error' => 'Something went wrong']);
+        }
+    }
+
+    public function profile()
+    {
+        return $this->show(Auth::user()->id);
     }
 
     /**
