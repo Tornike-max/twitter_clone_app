@@ -6,7 +6,7 @@
     @if (session()->has('success'))
     <x-success-message :message="session('success')" />
     @endif
-    <x-user-card :$user :$commentsCount :$ideasCount :$editing />
+    <x-user-card :$user :$commentsCount :$ideasCount :$followersCount :$editing />
 
     <hr />
 

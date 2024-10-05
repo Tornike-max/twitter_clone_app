@@ -16,17 +16,18 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::query()->with(['ideas', 'comments'])->where('id', '=', $id)->first();
+        $user = User::query()->with(['ideas', 'comments', 'likes', 'followers'])->where('id', '=', $id)->first();
         $ideasCount = $user->ideas()->count();
         $commentsCount = $user->comments()->count();
         $ideas = $user->ideas()->paginate(2);
-
+        $followersCount = $user->followers->count();
 
 
         return view('profile.index', [
             'editing' => false,
             'ideas' => $ideas,
             'user' => $user,
+            'followersCount' => $followersCount,
             'commentsCount' => $commentsCount,
             'ideasCount' => $ideasCount
         ]);
@@ -40,12 +41,13 @@ class UserController extends Controller
         $user = User::query()->with('ideas')->where('id', '=', $id)->first();
         $ideasCount = $user->ideas()->count();
         $commentsCount = Comment::query()->where('user_id', '=', $user->id)->count();
-
+        $followersCount = $user->followers->count();
 
         return view('profile.index', [
             'editing' => true,
             'user' => $user,
             'commentsCount' => $commentsCount,
+            'followersCount' => $followersCount,
             'ideasCount' => $ideasCount
         ]);
     }

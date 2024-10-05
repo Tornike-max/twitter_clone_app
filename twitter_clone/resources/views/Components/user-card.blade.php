@@ -1,4 +1,4 @@
-@props(['user','commentsCount' ,'ideasCount','editing'])
+@props(['user','commentsCount' ,'ideasCount','followersCount'=>[],'editing'])
 
 <div>
     <div class=" card">
@@ -55,15 +55,8 @@
                     {{$user->bio}}
                 </p>
                 @endif
-
-                <div class="d-flex justify-content-start">
-                    <a href="#" class="fw-light nav-link fs-6 me-3"> <span class="fas fa-user me-1">
-                        </span> 0 Followers </a>
-                    <a href="#" class="fw-light nav-link fs-6 me-3"> <span class="fas fa-brain me-1">
-                        </span> {{$ideasCount}} </a>
-                    <a href="#" class="fw-light nav-link fs-6"> <span class="fas fa-comment me-1">
-                        </span> {{$commentsCount}} </a>
-                </div>
+                {{-- 'followersCount','ideasCount','commentsCount' --}}
+                <x-profile-stats :$followersCount :$ideasCount :$commentsCount />
                 <div class="mt-3">
                     @if ($user->id !== Auth::user()->id)
                     @if (Auth::user()->follows($user))
