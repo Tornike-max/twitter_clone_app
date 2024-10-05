@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Idea extends Model
 {
-    protected $fillable = ['content', 'user_id'];
+    protected $with = ['user', 'comments.user'];
+    protected $fillable = ['content', 'user_id', 'like'];
     use HasFactory;
 
     public function comments()
@@ -18,5 +19,15 @@ class Idea extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'idea_like')->withTimestamps();
+    }
+
+    public function liked(User $user)
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
     }
 }

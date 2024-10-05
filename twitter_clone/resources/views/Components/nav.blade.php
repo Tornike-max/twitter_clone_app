@@ -10,7 +10,8 @@
             <ul class="navbar-nav">
                 @auth
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('user.profile',auth()->user()->id)}}">Profile</a>
+                    <a class="nav-link {{Route::is('user.profile') ? 'active' : ''}}"
+                        href="{{route('user.profile',auth()->user()->id)}}">Profile</a>
                 </li>
                 <li class="nav-item">
                     <form method="POST" action="{{route('auth.session.logout')}}">

@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -25,8 +26,8 @@ Route::resource('user', UserController::class)->only(['show', 'edit', 'update'])
 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('user.profile');
 Route::post('/user/{user}/follow', [FollowController::class, 'follow'])->name('user.follow');
 Route::post('/user/{user}/unfollow', [FollowController::class, 'unfollow'])->name('user.unfollow');
-
-
+Route::post('/idea/{idea}/like', [LikeController::class, 'like'])->name('user.like');
+Route::post('/idea/{idea}/unlike', [LikeController::class, 'unlike'])->name('user.unlike');
 
 Route::middleware('auth')->group(function () {
     Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.session.logout');
@@ -38,4 +39,4 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/terms', function () {
     return view('terms');
-});
+})->name('terms');
