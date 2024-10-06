@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminConroller;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\LikeController;
@@ -10,7 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/', FeedController::class)->name('dashboard');
 Route::get('/ideas/{idea}', [IdeaController::class, 'show'])->name('ideas.show');
 Route::get('/ideas/{idea}/edit', [IdeaController::class, 'edit'])->name('ideas.edit');
 
@@ -40,3 +42,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/terms', function () {
     return view('terms');
 })->name('terms');
+
+
+Route::get('/admin', [AdminConroller::class, 'index'])->name('admin.dashboard')->middleware('auth');

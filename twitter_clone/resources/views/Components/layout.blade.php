@@ -19,7 +19,9 @@
     <div class="container py-4">
         <div class="row">
             @auth
+            @if (!Route::is('admin.dashboard'))
             <x-left-side-bar />
+            @endif
             @endauth
             @auth
             <div class="col-6">
@@ -32,7 +34,9 @@
             </div>
             @endguest
             @auth
+            @if (!Route::is('admin.dashboard'))
             <x-right-side-bar />
+            @endif
             @endauth
         </div>
     </div>
