@@ -14,6 +14,8 @@ class FeedController extends Controller
 
         $user = Auth::user();
         $followingIds = $user->followings()->pluck('user_id');
+        $followingIds[] = $user->id;
+
 
         $ideas = Idea::query()->whereIn('user_id', $followingIds)->latest();
 

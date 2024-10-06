@@ -22,6 +22,7 @@ class AdminConroller extends Controller
         if (!Gate::allows('is-admin')) {
             abort(401);
         }
+
         return view('admin.dashboard');
     }
 
