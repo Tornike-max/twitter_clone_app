@@ -1,3 +1,6 @@
+@section('title',$user->name)
+
+
 <x-layout>
     @if (session()->has('error'))
     <x-error-message :message="session('error')" />

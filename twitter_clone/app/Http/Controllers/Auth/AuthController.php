@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Mail\WelcomeEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,13 +19,9 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|min:2',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed'
-        ]);
+        $validatedData = $request->validated();
 
         $validatedData['password'] = bcrypt($validatedData['password']);
 
@@ -39,12 +37,9 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function session(Request $request)
+    public function session(LoginRequest $request)
     {
-        $validatedData = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:8'
-        ]);
+        $validatedData = $request->validated();
 
         $user = Auth::attempt($validatedData);
         $request->session()->regenerate();

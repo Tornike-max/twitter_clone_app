@@ -27,7 +27,9 @@
                 @if ($editing)
                 <a href="{{route('user.show',$user->id)}}" class="btn btn-primary btn-sm">Go Back</a>
                 @else
-                <a href="{{route('user.edit',$user->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                @if(Auth::user()->id === $user->id)
+                <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                @endif
                 @endif
             </div>
             @if ($editing)
@@ -55,7 +57,6 @@
                     {{$user->bio}}
                 </p>
                 @endif
-                {{-- 'followersCount','ideasCount','commentsCount' --}}
                 <x-profile-stats :$followersCount :$ideasCount :$commentsCount />
                 <div class="mt-3">
                     @if ($user->id !== Auth::user()->id)

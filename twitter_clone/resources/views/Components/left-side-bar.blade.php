@@ -20,6 +20,12 @@
         </div>
         <div class="card-footer text-center py-2">
             <a class="btn btn-link btn-sm" href="{{route('user.profile',Auth::user()->id)}}">View Profile </a>
+
+            <div class="d-flex justify-content-center align-items-center gap-2">
+                <a href="{{route('lang','en')}}">EN</a>
+                <span>|</span>
+                <a href="{{route('lang','es')}}">ES</a>
+            </div>
         </div>
     </div>
 </div>

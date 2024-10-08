@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Idea extends Model
 {
     protected $with = ['user', 'comments.user'];
+    protected $withCount = ['likes'];
     protected $fillable = ['content', 'user_id', 'like'];
     use HasFactory;
 

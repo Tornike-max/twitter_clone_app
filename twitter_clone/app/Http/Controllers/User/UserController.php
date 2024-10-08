@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -39,6 +41,11 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::query()->with('ideas')->where('id', '=', $id)->first();
+
+        if (Gate::denies('authorized', $user)) {
+            abort(403, 'Unauthorized');
+        }
+
         $ideasCount = $user->ideas()->count();
         $commentsCount = Comment::query()->where('user_id', '=', $user->id)->count();
         $followersCount = $user->followers->count();
@@ -55,16 +62,15 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
-        $validatedData = $request->validate([
-            'name' => 'nullable',
-            'email' => 'nullable|email',
-            'bio' => 'nullable',
-            'image' => 'image'
-        ]);
+        $validatedData = $request->validated();
 
         $user = User::query()->find($id);
+
+        if (Gate::denies('authorized', $user)) {
+            abort(403, 'Unauthorized');
+        }
 
         if ($request->has('image')) {
             if ($user->image) {

@@ -1,3 +1,4 @@
+@section('title','Feed')
 <x-layout>
     @if (session()->has('success'))
     <x-success-message :message="session('success')" />

@@ -1,4 +1,9 @@
-<h4> Share yours ideas </h4>
+@auth
+<h4>{{trans('ideas.share_ideas')}}</h4>
+@endauth
+@guest
+<h4>{{trans('ideas.login_to_share')}}</h4>
+@endguest
 <form method="POST" action="{{route('idea.store')}}" class="row">
     @csrf
     <div class="mb-3">

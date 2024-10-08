@@ -17,7 +17,7 @@ class FeedController extends Controller
         $followingIds[] = $user->id;
 
 
-        $ideas = Idea::query()->whereIn('user_id', $followingIds)->latest();
+        $ideas = Idea::whereIn('user_id', $followingIds)->latest();
 
         if (isset($q)) {
             $val = request()->validate([

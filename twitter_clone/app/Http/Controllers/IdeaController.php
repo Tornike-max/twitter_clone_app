@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreIdeaRequest;
+use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Idea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,15 +11,13 @@ use Illuminate\Support\Facades\Gate;
 
 class IdeaController extends Controller
 {
-    public function store(Request $request)
+    public function store(StoreIdeaRequest $request)
     {
         if (!Gate::allows('is-admin') || !Auth::user()->is($request->user())) {
             abort(401);
         }
 
-        $validatedData = $request->validate([
-            'content' => 'required|string|max:250',
-        ]);
+        $validatedData = $request->validated();
 
         $validatedData['user_id'] = Auth::user()->id;
 
@@ -53,7 +53,7 @@ class IdeaController extends Controller
         ]);
     }
 
-    public function update(Request $request, Idea $idea)
+    public function update(UpdateIdeaRequest $request, Idea $idea)
     {
 
         if (!Gate::allows('is-admin') || !Gate::allows('idea.action', $idea)) {
@@ -65,9 +65,7 @@ class IdeaController extends Controller
             abort(401);
         }
 
-        $validatedData = $request->validate([
-            'content' => 'required|max:250|string'
-        ]);
+        $validatedData = $request->validated();
 
         $result = $idea->update($validatedData);
 

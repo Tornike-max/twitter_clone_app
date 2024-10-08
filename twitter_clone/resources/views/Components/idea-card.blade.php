@@ -12,15 +12,21 @@
                 </div>
             </div>
             <div class="d-flex align-items-center gap-2">
+                @if (!Route::is('ideas.show'))
                 <a href="{{route('ideas.show',$idea->id)}}" class="btn btn-success btn-sm">View</a>
+                @endif
                 @if ($editing === true)
+                @if (Auth::user()->id === $idea->user->id)
                 <a href="{{route('ideas.edit',$idea->id)}}" class="btn btn-secondary btn-sm">Edit</a>
                 @endif
+                @endif
+                @if (Auth::user()->id === $idea->user->id)
                 <form method="POST" action="{{route('idea.destroy',$idea->id)}}">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm">X</button>
                 </form>
+                @endif
             </div>
         </div>
     </div>

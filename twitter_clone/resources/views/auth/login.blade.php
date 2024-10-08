@@ -1,6 +1,8 @@
+@section('title','Login')
+
 <x-layout>
     @if (session()->has('success'))
-    <x-idea-success-message :message="session('success')" />
+    <x-success-message :message="session('success')" />
     @endif
     <div class="row justify-content-center">
         <div class="col-12 col-sm-8 col-md-6">

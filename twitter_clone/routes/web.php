@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\Lang\LangController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\UserController;
@@ -42,6 +43,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/terms', function () {
     return view('terms');
 })->name('terms');
+
+//localization
+Route::get('/lang/{language}', [LangController::class, 'lang'])->name('lang');
 
 
 Route::get('/admin', [AdminConroller::class, 'index'])->name('admin.dashboard')->middleware('auth');
