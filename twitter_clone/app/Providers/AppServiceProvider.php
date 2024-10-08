@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -43,5 +44,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         app()->setLocale('es');
+
+        View::share(
+            'topUsers',
+            User::withCount('ideas')->orderBy('ideas_count', 'desc')->limit(5)->get()
+        );
     }
 }

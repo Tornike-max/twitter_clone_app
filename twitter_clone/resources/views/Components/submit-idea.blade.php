@@ -13,6 +13,6 @@
     <span class="text-danger pb-3">{{$message}}</span>
     @enderror
     <div>
-        <button type="submit" class="btn btn-dark"> Share </button>
+        <button type="submit" class="btn btn-dark"> {{trans('ideas.share')}} </button>
     </div>
 </form>

@@ -18,7 +18,7 @@ class DashboardController extends Controller
                 'query' => 'required|min:2'
             ]);
 
-            $ideas->where('content', 'like', '%' . $val['query'] . '%');
+            $ideas->search($val['query']);
         } else {
             $ideas->orderBy('created_at', 'desc');
         };

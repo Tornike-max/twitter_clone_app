@@ -5,21 +5,22 @@
                 <li class="nav-item">
                     <a class="nav-link {{Route::is('dashboard') ? 'text-white bg-primary rounded' : 'text-dark'}} "
                         href="{{route('dashboard')}}">
-                        <span>Home</span></a>
+                        <span>{{trans('ideas.list_home')}}</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{Route::is('terms') ? 'text-white bg-primary rounded' : 'text-dark'}}"
                         href="{{route('terms')}}">
-                        <span>Terms</span></a>
+                        <span>{{trans('ideas.list_terms')}}</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">
-                        <span>Support</span></a>
+                        <span>{{trans('ideas.list_support')}}</span></a>
                 </li>
             </ul>
         </div>
         <div class="card-footer text-center py-2">
-            <a class="btn btn-link btn-sm" href="{{route('user.profile',Auth::user()->id)}}">View Profile </a>
+            <a class="btn btn-link btn-sm"
+                href="{{route('user.profile',Auth::user()->id)}}">{{trans('ideas.list_view_profile')}} </a>
 
             <div class="d-flex justify-content-center align-items-center gap-2">
                 <a href="{{route('lang','en')}}">EN</a>
