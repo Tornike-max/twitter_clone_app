@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Idea;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,6 @@ class AdminConroller extends Controller
      */
     public function index()
     {
-
         if (!Auth::user()->status) {
             abort(401);
         }
@@ -25,10 +25,11 @@ class AdminConroller extends Controller
         }
 
         $users = User::query()->where('status', '!=', 'superadmin')->orderby('created_at', 'desc')->paginate(10);
-
+        $ideas = Idea::query()->with('user')->latest()->paginate(10);
 
         return view('admin.dashboard', [
-            'users' => $users
+            'users' => $users,
+            'ideas' => $ideas
         ]);
     }
 
@@ -36,6 +37,9 @@ class AdminConroller extends Controller
     //users
     public function showUser(User $user)
     {
+        if (!Gate::allows('is-admin')) {
+            abort(401);
+        }
         return view('admin.users.show', [
             'user' => $user
         ]);
@@ -43,6 +47,9 @@ class AdminConroller extends Controller
 
     public function editUser(User $user)
     {
+        if (!Gate::allows('is-admin')) {
+            abort(401);
+        }
         return view('admin.users.edit', [
             'user' => $user
         ]);
@@ -50,6 +57,9 @@ class AdminConroller extends Controller
 
     public function updateUser(Request $request, User $user)
     {
+        if (!Gate::allows('is-admin')) {
+            abort(401);
+        }
         $validatedData = $request->validate([
             'name' => 'nullable|string|min:2',
             'email' => 'nullable|email',
@@ -63,55 +73,54 @@ class AdminConroller extends Controller
 
     public function deleteUser(User $user)
     {
+        if (!Gate::allows('is-admin')) {
+            abort(401);
+        }
         $user->delete();
         return redirect()->route('admin.dashboard')->with(['success' => 'User deleted successfully']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    //ideas
+    public function ideasShow(Idea $idea)
     {
-        //
+        if (!Gate::allows('is-admin')) {
+            abort(401);
+        }
+        return view('admin.ideas.show', [
+            'idea' => $idea
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function editIdea(Idea $idea)
     {
-        //
+        if (!Gate::allows('is-admin')) {
+            abort(401);
+        }
+        return view('admin.ideas.edit', [
+            'idea' => $idea
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function updateIdea(Request $request, Idea $idea)
     {
-        //
+        if (!Gate::allows('is-admin')) {
+            abort(401);
+        }
+        $validatedData = $request->validate([
+            'content' => 'required|string'
+        ]);
+
+        $idea->update($validatedData);
+        return redirect()->route('admin.idea.edit', $idea->id)->with(['success' => 'Idea updated successfully']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function deleteIdea(Idea $idea)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if (!Gate::allows('is-admin')) {
+            abort(401);
+        }
+        $idea->delete();
+        return redirect()->route('admin.dashboard')->with(['success' => 'Idea deleted successfully']);
     }
 }

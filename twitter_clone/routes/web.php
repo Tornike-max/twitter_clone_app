@@ -54,3 +54,9 @@ Route::get('/admin/users/{user}', [AdminConroller::class, 'showUser'])->name('ad
 Route::get('/admin/users/{user}/edit', [AdminConroller::class, 'editUser'])->name('admin.user.edit');
 Route::put('/admin/users/update/{user}', [AdminConroller::class, 'updateUser'])->name('admin.user.update');
 Route::delete('/admin/users/delete/{user}', [AdminConroller::class, 'deleteUser'])->name('admin.user.delete');
+
+//admin idea routes;
+Route::get('/admin/ideas/{idea}', [AdminConroller::class, 'ideasShow'])->name('admin.idea');
+Route::get('/admin/ideas/{idea}/edit', [AdminConroller::class, 'editIdea'])->name('admin.idea.edit');
+Route::put('/admin/ideas/update/{idea}', [AdminConroller::class, 'updateIdea'])->name('admin.idea.update');
+Route::delete('/admin/ideas/delete/{idea}', [AdminConroller::class, 'deleteIdea'])->name('admin.idea.delete');
