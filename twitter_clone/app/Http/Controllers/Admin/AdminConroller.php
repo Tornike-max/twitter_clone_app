@@ -24,8 +24,8 @@ class AdminConroller extends Controller
             abort(401);
         }
 
-        $users = User::query()->where('status', '!=', 'superadmin')->orderby('created_at', 'desc')->paginate(10);
-        $ideas = Idea::query()->with('user')->latest()->paginate(10);
+        $users = User::query()->where('status', '!=', 'superadmin')->orderby('created_at', 'desc')->paginate(2);
+        $ideas = Idea::query()->with('user')->latest()->paginate(2);
 
         return view('admin.dashboard', [
             'users' => $users,
