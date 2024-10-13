@@ -9,6 +9,13 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
                 @auth
+                @can('is-admin')
+                <li class="nav-item">
+                    <a class="nav-link {{Route::is('admin.dashboard') ? 'active' : ''}}"
+                        href="{{route('admin.dashboard')}}">Admin Panel</a>
+                </li>
+                @endcan
+
                 <li class="nav-item">
                     <a class="nav-link {{Route::is('user.profile') ? 'active' : ''}}"
                         href="{{route('user.profile',auth()->user()->id)}}">Profile</a>

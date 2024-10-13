@@ -45,4 +45,11 @@ Route::get('/terms', function () {
 Route::get('/lang/{language}', [LangController::class, 'lang'])->name('lang');
 
 
+
+//admin
 Route::get('/admin', [AdminConroller::class, 'index'])->name('admin.dashboard')->middleware('auth');
+
+//admin user routes;
+Route::get('/admin/users/{user}', [AdminConroller::class, 'showUser'])->name('admin.user');
+Route::get('/admin/users/{user}/edit', [AdminConroller::class, 'editUser'])->name('admin.user.edit');
+Route::put('/admin/users/update/{user}', [AdminConroller::class, 'updateUser'])->name('admin.user.update');

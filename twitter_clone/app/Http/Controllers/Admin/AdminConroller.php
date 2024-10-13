@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -23,7 +24,41 @@ class AdminConroller extends Controller
             abort(401);
         }
 
-        return view('admin.dashboard');
+        $users = User::query()->where('is_admin', '!=', 1)->orderby('created_at', 'desc')->paginate(10);
+
+
+        return view('admin.dashboard', [
+            'users' => $users
+        ]);
+    }
+
+
+    //users
+    public function showUser(User $user)
+    {
+        return view('admin.users.show', [
+            'user' => $user
+        ]);
+    }
+
+    public function editUser(User $user)
+    {
+        return view('admin.users.edit', [
+            'user' => $user
+        ]);
+    }
+
+    public function updateUser(Request $request, User $user)
+    {
+        $validatedData = $request->validate([
+            'name' => 'nullable|string|min:2',
+            'email' => 'nullable|email',
+            'status' => 'nullable|string'
+        ]);
+
+        $user->update($validatedData);
+
+        return redirect()->route('admin.user.edit', $user->id);
     }
 
     /**

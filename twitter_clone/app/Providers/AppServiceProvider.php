@@ -6,6 +6,7 @@ use App\Models\Idea;
 use App\Models\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -32,11 +33,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('is-admin', function (User $user) {
-            return $user->is_admin;
+            return $user->status === 'super admin' || $user->status === 'admin';
         });
 
         Gate::define('idea.action', function (User $user, Idea $idea) {
-            return $user->is_admin || $user->id === $idea->user_id;
+            return $user->status === 'super admin' || $user->status === 'admin' || $user->id === $idea->user_id;
         });
 
         Gate::define('authorized', function (User $authUser, User $modelUser) {
@@ -45,9 +46,14 @@ class AppServiceProvider extends ServiceProvider
 
         app()->setLocale('es');
 
+
+        $topUsers = Cache::remember('topUsers', now()->addMinutes(5), function () {
+            return User::withCount('ideas')->orderBy('ideas_count', 'desc')->take(5)->get();
+        });
+
         View::share(
             'topUsers',
-            User::withCount('ideas')->orderBy('ideas_count', 'desc')->limit(5)->get()
+            $topUsers
         );
     }
 }

@@ -13,6 +13,7 @@ class FeedController extends Controller
     {
 
         $user = Auth::user();
+        // dd($user);
         $followingIds = $user->followings()->pluck('user_id');
         $followingIds[] = $user->id;
 
