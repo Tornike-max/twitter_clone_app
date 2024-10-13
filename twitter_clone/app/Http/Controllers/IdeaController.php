@@ -13,7 +13,7 @@ class IdeaController extends Controller
 {
     public function store(StoreIdeaRequest $request)
     {
-        if (!Gate::allows('is-admin') || !Auth::user()->is($request->user())) {
+        if (request()->user()->isnot(Auth::user())) {
             abort(401);
         }
 
@@ -27,7 +27,7 @@ class IdeaController extends Controller
 
     public function show(Idea $idea)
     {
-        if (!Gate::allows('is-admin') || !Gate::allows('idea.action', $idea)) {
+        if (!Gate::allows('idea.action', $idea)) {
             abort(401);
         }
 
@@ -43,7 +43,7 @@ class IdeaController extends Controller
             abort(401);
         }
 
-        if (!Gate::allows('is-admin') || !Gate::allows('idea.action', $idea)) {
+        if (!Gate::allows('idea.action', $idea)) {
             abort(401);
         }
 
@@ -56,7 +56,7 @@ class IdeaController extends Controller
     public function update(UpdateIdeaRequest $request, Idea $idea)
     {
 
-        if (!Gate::allows('is-admin') || !Gate::allows('idea.action', $idea)) {
+        if (!Gate::allows('idea.action', $idea)) {
             abort(401);
         }
 
@@ -77,7 +77,7 @@ class IdeaController extends Controller
     public function destroy(Idea $idea)
     {
 
-        if (!Gate::allows('is-admin') || !Gate::allows('idea.action', $idea)) {
+        if (!Gate::allows('idea.action', $idea)) {
             abort(401);
         }
 

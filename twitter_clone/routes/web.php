@@ -53,3 +53,4 @@ Route::get('/admin', [AdminConroller::class, 'index'])->name('admin.dashboard')-
 Route::get('/admin/users/{user}', [AdminConroller::class, 'showUser'])->name('admin.user');
 Route::get('/admin/users/{user}/edit', [AdminConroller::class, 'editUser'])->name('admin.user.edit');
 Route::put('/admin/users/update/{user}', [AdminConroller::class, 'updateUser'])->name('admin.user.update');
+Route::delete('/admin/users/delete/{user}', [AdminConroller::class, 'deleteUser'])->name('admin.user.delete');

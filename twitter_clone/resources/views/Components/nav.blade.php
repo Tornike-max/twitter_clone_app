@@ -38,8 +38,6 @@
                     <a class="nav-link {{request()->is('register') ? 'active' : ''}}" href="/register">Register</a>
                 </li>
                 @endguest
-
-
             </ul>
         </div>
     </div>

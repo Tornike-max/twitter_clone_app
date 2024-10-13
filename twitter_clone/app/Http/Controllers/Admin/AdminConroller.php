@@ -16,7 +16,7 @@ class AdminConroller extends Controller
     public function index()
     {
 
-        if (!Auth::user()->is_admin) {
+        if (!Auth::user()->status) {
             abort(401);
         }
 
@@ -24,7 +24,7 @@ class AdminConroller extends Controller
             abort(401);
         }
 
-        $users = User::query()->where('is_admin', '!=', 1)->orderby('created_at', 'desc')->paginate(10);
+        $users = User::query()->where('status', '!=', 'superadmin')->orderby('created_at', 'desc')->paginate(10);
 
 
         return view('admin.dashboard', [
@@ -58,7 +58,13 @@ class AdminConroller extends Controller
 
         $user->update($validatedData);
 
-        return redirect()->route('admin.user.edit', $user->id);
+        return redirect()->route('admin.user.edit', $user->id)->with(['success' => 'User updated successfully']);
+    }
+
+    public function deleteUser(User $user)
+    {
+        $user->delete();
+        return redirect()->route('admin.dashboard')->with(['success' => 'User deleted successfully']);
     }
 
     /**

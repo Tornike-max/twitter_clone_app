@@ -1,6 +1,8 @@
 @section('title', 'Admin')
 
 <x-admin-layout>
+    <a class="btn btn-primary" href="{{route('admin.dashboard')}}">Go Back</a>
+
     <form method="POST" action="{{route('admin.user.update',$user->id)}}">
         @csrf
         @method('PUT')
